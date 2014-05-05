@@ -5,6 +5,7 @@ import io.metacake.s2d.window.GraphicsWindow
 import io.metacake.s2d.output.drawing.DrawingDevice
 import io.metacake.s2d.input.keyboard.KeyboardDevice
 import metacake.scala.snake.state.SetupState
+import metacake.scala.snake.entity.SnakeSegment
 
 object Snake {
   val WIDTH: Int = 500
@@ -12,10 +13,11 @@ object Snake {
 
   def main(args: Array[String]) {
     val builder: BootstrapBuilder = new BootstrapBuilder
+    val segments: List[SnakeSegment] = List(new SnakeSegment(0, 0))
     builder.withWindow(new GraphicsWindow(WIDTH, HEIGHT))
            .withInputDevices(new KeyboardDevice)
            .withOutputDevices(new DrawingDevice)
-           .withInitialState(new SetupState)
+           .withInitialState(new SetupState(segments))
            .createAndLaunch()
   }
 }

@@ -13,7 +13,7 @@
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>2.10.3</version>
+            <version>2.11.0</version>
         </dependency>
         <dependency>
             <groupId>metacake</groupId>
@@ -24,12 +24,6 @@
             <groupId>metacake</groupId>
             <artifactId>s2d-engine</artifactId>
             <version>a0.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.specs2</groupId>
-            <artifactId>specs2_2.9.1</artifactId>
-            <version>1.8</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
     <properties>
