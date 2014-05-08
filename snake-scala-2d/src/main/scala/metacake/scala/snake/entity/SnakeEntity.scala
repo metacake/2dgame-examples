@@ -17,6 +17,10 @@ object Direction extends Enumeration {
 class SnakeSegment(val x: Int, val y: Int) extends Positionable {
   def image(): FilledShapeInstruction = new RectangleInstruction(SnakeEntity.SNAKE_SIZE, SnakeEntity.SNAKE_SIZE, SnakeEntity.SNAKE_COLOR)
 
+  override def equals(o: Any): Boolean = o match {
+    case that: SnakeSegment => this.x == that.x && this.y == that.y
+    case _ => false
+  }
   override def toString: String = "(" + x +", " + y + ")"
 }
 
@@ -44,5 +48,9 @@ class SnakeEntity(val dir: Direction, val segments: List[SnakeSegment]) extends 
     })
   }
 
+  override def equals(o: Any): Boolean = o match {
+    case that: SnakeEntity => this.segments == that.segments
+    case _ => false
+  }
   override def toString: String = segments.toString()
 }
