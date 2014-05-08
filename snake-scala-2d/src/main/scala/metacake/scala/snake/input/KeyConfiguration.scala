@@ -1,7 +1,7 @@
 package metacake.scala.snake.input
 
 import io.metacake.core.process.ActionRecognizerName
-import io.metacake.s2d.process.recognizers.keyboard.{KeyHoldActionRecognizer, KeyActionRecognizer}
+import io.metacake.s2d.process.recognizers.keyboard.{KeyReleaseActionRecognizer, KeyHoldActionRecognizer, KeyActionRecognizer}
 import io.metacake.core.input.ActionTrigger
 import java.awt.event.KeyEvent
 import io.metacake.s2d.input.keyboard.KeyboardActionTrigger
@@ -23,4 +23,8 @@ object KeyConfiguration {
   val D: ActionRecognizerName = new ActionRecognizerName()
   val dRecognizer: KeyActionRecognizer = new KeyHoldActionRecognizer(D)
   val dTrigger: ActionTrigger[KeyEvent] = new KeyboardActionTrigger(KeyEvent.VK_D).bindRecognizer(dRecognizer)
+
+  val ESCAPE: ActionRecognizerName = new ActionRecognizerName()
+  val escRecognizer: KeyActionRecognizer = new KeyReleaseActionRecognizer(ESCAPE)
+  val escTrigger: ActionTrigger[KeyEvent] = new KeyboardActionTrigger(KeyEvent.VK_ESCAPE).bindRecognizer(escRecognizer)
 }

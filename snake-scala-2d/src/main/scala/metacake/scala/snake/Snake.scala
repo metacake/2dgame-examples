@@ -17,6 +17,7 @@ object Snake {
     builder.withWindow(new GraphicsWindow(WIDTH, HEIGHT))
            .withInputDevices(new KeyboardDevice)
            .withOutputDevices(new DrawingDevice)
+           .withLoopTime(250)
            .withInitialState(new SetupState(segments))
            .createAndLaunch()
   }

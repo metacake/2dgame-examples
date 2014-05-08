@@ -2,11 +2,16 @@ package metacake.scala.snake.entity
 
 import java.awt.Color
 import io.metacake.s2d.output.drawing.instructions._
-import scala.collection.immutable.StringOps
+import metacake.scala.snake.entity.Direction.Direction
 
 object SnakeEntity {
   val SNAKE_COLOR: Color = Color.GREEN
   val SNAKE_SIZE: Int = 50
+}
+
+object Direction extends Enumeration {
+  type Direction = Value
+  val UP, DOWN, LEFT, RIGHT = Value
 }
 
 class SnakeSegment(val x: Int, val y: Int) extends Positionable {
@@ -15,7 +20,23 @@ class SnakeSegment(val x: Int, val y: Int) extends Positionable {
   override def toString: String = "(" + x +", " + y + ")"
 }
 
-class SnakeEntity(val segments: List[SnakeSegment]) extends Drawable {
+class SnakeEntity(val dir: Direction, val segments: List[SnakeSegment]) extends Drawable {
+
+  def move(): SnakeEntity = {
+    def head: SnakeSegment = dir match {
+      case Direction.UP => headInDirection(0, -1)
+      case Direction.DOWN => headInDirection(0, 1)
+      case Direction.LEFT => headInDirection(-1, 0)
+      case Direction.RIGHT => headInDirection(1, 0)
+    }
+    new SnakeEntity(dir, head :: segments.dropRight(1))
+  }
+
+  private def headInDirection(x: Int, y: Int): SnakeSegment = {
+    def head: SnakeSegment = segments.head
+    new SnakeSegment(head.x + x, head.y + y)
+  }
+
   override def draw(scene: DrawInstruction): DrawInstruction = {
     def offset(pos: Int): Int = pos * SnakeEntity.SNAKE_SIZE
     segments.foldLeft(scene)({(acc: DrawInstruction, segment: SnakeSegment) =>

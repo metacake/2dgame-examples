@@ -1,9 +1,9 @@
 package metacake.scala.snake.state
 
-import io.metacake.core.process.state.{GameState, UserState}
+import io.metacake.core.process.state.{EndState, GameState, UserState}
 import io.metacake.core.output.RenderingInstructionBundle
 import io.metacake.core.process.{ActionRecognizerName, ActionRecognizerPipe}
-import metacake.scala.snake.entity.{SnakeSegment, SnakeEntity}
+import metacake.scala.snake.entity.SnakeEntity
 import io.metacake.s2d.output.drawing.DrawingDevice
 import java.awt.Color
 import metacake.scala.snake.Snake
@@ -11,28 +11,25 @@ import io.metacake.s2d.output.drawing.instructions.RectangleInstruction
 import io.metacake.s2d.input.keyboard.KeyboardDevice
 import io.metacake.core.common.CustomizableMap
 import io.metacake.s2d.process.recognizers.keyboard.KeyActionRecognizer
+import metacake.scala.snake.entity.Direction._
 import metacake.scala.snake.input.KeyConfiguration
 
 class SnakeState(snake: SnakeEntity) extends UserState {
   override def tick(delta: Long, pipe: ActionRecognizerPipe): GameState = {
-    new SnakeState(handleKeyboardAction(pipe.emptyBucket(KeyboardDevice.KEY)))
+    def recognizers: CustomizableMap[ActionRecognizerName, KeyActionRecognizer] = pipe.emptyBucket(KeyboardDevice.KEY)
+    if (recognizers.get(KeyConfiguration.ESCAPE).triggerWeight() > 0) {
+      EndState.closeWith(this)
+    } else {
+      new SnakeState(new SnakeEntity(getDirection(recognizers), snake.segments).move())
+    }
   }
 
-  private def handleKeyboardAction(recognizers: CustomizableMap[ActionRecognizerName, KeyActionRecognizer]): SnakeEntity = {
-    if (recognizers.get(KeyConfiguration.W).wasTriggered()) moveSnakeSegments(0, -1)
-    else if (recognizers.get(KeyConfiguration.S).wasTriggered()) moveSnakeSegments(0, 1)
-    else if (recognizers.get(KeyConfiguration.A).wasTriggered()) moveSnakeSegments(-1, 0)
-    else if (recognizers.get(KeyConfiguration.D).wasTriggered()) moveSnakeSegments(1, 0)
-    else snake
-  }
-
-  private def moveSnakeSegments(x: Int, y: Int): SnakeEntity = {
-    new SnakeEntity(headInDirection(x, y) :: snake.segments.dropRight(1))
-  }
-
-  private def headInDirection(x: Int, y: Int): SnakeSegment = {
-    def head: SnakeSegment = snake.segments.head
-    new SnakeSegment(head.x + x, head.y + y)
+  def getDirection(recognizers: CustomizableMap[ActionRecognizerName, KeyActionRecognizer]): Direction = {
+    if (recognizers.get(KeyConfiguration.W).triggerWeight() > 0) UP
+    else if (recognizers.get(KeyConfiguration.S).triggerWeight() > 0) DOWN
+    else if (recognizers.get(KeyConfiguration.A).triggerWeight() > 0) LEFT
+    else if (recognizers.get(KeyConfiguration.D).triggerWeight() > 0) RIGHT
+    else snake.dir
   }
 
   override def renderingInstructions(): RenderingInstructionBundle = {
