@@ -35,7 +35,7 @@ class SnakeState(snake: Snake) extends UserState {
 
   private def outsideBounds(snake: Snake): Boolean = {
     def head = snake.segments.head
-    head.x < 0 || head.x >= (SnakeApp.WIDTH / 50) || head.y < 0 || head.y >= (SnakeApp.HEIGHT / 50)
+    head.x < 0 || head.x >= (SnakeApp.WIDTH / Snake.SIZE) || head.y < 0 || head.y >= (SnakeApp.HEIGHT / Snake.SIZE)
   }
 
   override def renderingInstructions(): RenderingInstructionBundle = {
