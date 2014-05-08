@@ -12,12 +12,12 @@ import io.metacake.s2d.input.keyboard.KeyboardDevice
 import io.metacake.core.common.CustomizableMap
 import io.metacake.s2d.process.recognizers.keyboard.KeyActionRecognizer
 import metacake.scala.snake.entity.Direction._
-import metacake.scala.snake.input.KeyConfiguration
+import metacake.scala.snake.input.{KeyConfiguration => conf}
 
 class SnakeState(snake: SnakeEntity) extends UserState {
   override def tick(delta: Long, pipe: ActionRecognizerPipe): GameState = {
     def recognizers: CustomizableMap[ActionRecognizerName, KeyActionRecognizer] = pipe.emptyBucket(KeyboardDevice.KEY)
-    if (recognizers.get(KeyConfiguration.ESCAPE).triggerWeight() > 0) {
+    if (recognizers.get(conf.ESCAPE).triggerWeight() > 0) {
       EndState.closeWith(this)
     } else {
       new SnakeState(new SnakeEntity(getDirection(recognizers), snake.segments).move())
@@ -25,10 +25,10 @@ class SnakeState(snake: SnakeEntity) extends UserState {
   }
 
   def getDirection(recognizers: CustomizableMap[ActionRecognizerName, KeyActionRecognizer]): Direction = {
-    if (recognizers.get(KeyConfiguration.W).triggerWeight() > 0) UP
-    else if (recognizers.get(KeyConfiguration.S).triggerWeight() > 0) DOWN
-    else if (recognizers.get(KeyConfiguration.A).triggerWeight() > 0) LEFT
-    else if (recognizers.get(KeyConfiguration.D).triggerWeight() > 0) RIGHT
+    if (recognizers.get(conf.W).triggerWeight() > 0) UP
+    else if (recognizers.get(conf.S).triggerWeight() > 0) DOWN
+    else if (recognizers.get(conf.A).triggerWeight() > 0) LEFT
+    else if (recognizers.get(conf.D).triggerWeight() > 0) RIGHT
     else snake.dir
   }
 
