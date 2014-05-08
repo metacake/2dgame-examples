@@ -17,11 +17,8 @@ import metacake.scala.snake.input.{KeyConfiguration => conf}
 class SnakeState(snake: SnakeEntity) extends UserState {
   override def tick(delta: Long, pipe: ActionRecognizerPipe): GameState = {
     def recognizers: CustomizableMap[ActionRecognizerName, KeyActionRecognizer] = pipe.emptyBucket(KeyboardDevice.KEY)
-    if (recognized(recognizers, conf.ESCAPE)) {
-      EndState.closeWith(this)
-    } else {
-      new SnakeState(new SnakeEntity(getDirection(recognizers), snake.segments).move())
-    }
+    if (recognized(recognizers, conf.ESCAPE) || outsideBounds(snake)) EndState.closeWith(this)
+    else new SnakeState(new SnakeEntity(getDirection(recognizers), snake.segments).move())
   }
 
   private def getDirection(recognizers: CustomizableMap[ActionRecognizerName, KeyActionRecognizer]): Direction = {
@@ -34,6 +31,11 @@ class SnakeState(snake: SnakeEntity) extends UserState {
 
   private def recognized(recognizers: CustomizableMap[ActionRecognizerName, KeyActionRecognizer], name: ActionRecognizerName): Boolean = {
     recognizers.get(name).triggerWeight() > 0
+  }
+
+  private def outsideBounds(snake: SnakeEntity): Boolean = {
+    def head = snake.segments.head
+    head.x < 0 || head.x >= (Snake.WIDTH / 50) || head.y < 0 || head.y >= (Snake.HEIGHT / 50)
   }
 
   override def renderingInstructions(): RenderingInstructionBundle = {
