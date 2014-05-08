@@ -5,8 +5,8 @@ import io.metacake.s2d.output.drawing.instructions._
 import metacake.scala.snake.entity.Direction.Direction
 
 object Snake {
-  val SNAKE_COLOR: Color = Color.GREEN
-  val SNAKE_SIZE: Int = 50
+  val COLOR: Color = Color.GREEN
+  val SIZE: Int = 50
 }
 
 object Direction extends Enumeration {
@@ -15,7 +15,7 @@ object Direction extends Enumeration {
 }
 
 class Segment(val x: Int, val y: Int) extends Positionable {
-  def image(): FilledShapeInstruction = new RectangleInstruction(Snake.SNAKE_SIZE, Snake.SNAKE_SIZE, Snake.SNAKE_COLOR)
+  def image(): FilledShapeInstruction = new RectangleInstruction(Snake.SIZE, Snake.SIZE, Snake.COLOR)
 
   override def equals(o: Any): Boolean = o match {
     case that: Segment => this.x == that.x && this.y == that.y
@@ -42,7 +42,7 @@ class Snake(val dir: Direction, val segments: List[Segment]) extends Drawable {
   }
 
   override def draw(scene: DrawInstruction): DrawInstruction = {
-    def offset(pos: Int): Int = pos * Snake.SNAKE_SIZE
+    def offset(pos: Int): Int = pos * Snake.SIZE
     segments.foldLeft(scene)({(acc: DrawInstruction, segment: Segment) =>
       new PlaceInstruction(segment.image(), offset(segment.x), offset(segment.y), acc)
     })
