@@ -23,6 +23,4 @@ object KeyConfiguration {
   val D: ActionRecognizerName = new ActionRecognizerName()
   val dRecognizer: KeyActionRecognizer = new KeyHoldActionRecognizer(D)
   val dTrigger: ActionTrigger[KeyEvent] = new KeyboardActionTrigger(KeyEvent.VK_D).bindRecognizer(dRecognizer)
-
-
 }

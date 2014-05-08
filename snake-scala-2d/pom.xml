@@ -25,6 +25,12 @@
             <artifactId>s2d-engine</artifactId>
             <version>a0.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_2.11</artifactId>
+            <version>2.1.5</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
