@@ -6,9 +6,9 @@ import metacake.scala.snake.entity.Direction._
 class SnakeEntitySpec extends UnitSpec {
 
   "A SnakeEntity" should "move in the correct direction" in {
-    assert(new SnakeEntity(UP, List(new SnakeSegment(0, 0))).move() == new SnakeEntity(UP, List(new SnakeSegment(0, -1))))
-    assert(new SnakeEntity(DOWN, List(new SnakeSegment(0, 0))).move() == new SnakeEntity(DOWN, List(new SnakeSegment(0, 1))))
-    assert(new SnakeEntity(LEFT, List(new SnakeSegment(0, 0))).move() == new SnakeEntity(LEFT, List(new SnakeSegment(-1, 0))))
-    assert(new SnakeEntity(RIGHT, List(new SnakeSegment(0, 0))).move() == new SnakeEntity(RIGHT, List(new SnakeSegment(1, 0))))
+    assert(new Snake(UP, List(new Segment(0, 0))).move() == new Snake(UP, List(new Segment(0, -1))))
+    assert(new Snake(DOWN, List(new Segment(0, 0))).move() == new Snake(DOWN, List(new Segment(0, 1))))
+    assert(new Snake(LEFT, List(new Segment(0, 0))).move() == new Snake(LEFT, List(new Segment(-1, 0))))
+    assert(new Snake(RIGHT, List(new Segment(0, 0))).move() == new Snake(RIGHT, List(new Segment(1, 0))))
   }
 }
