@@ -7,6 +7,7 @@ import metacake.scala.snake.entity.Direction.Direction
 object Snake {
   val COLOR: Color = Color.GREEN
   val SIZE: Int = 50
+  val IMAGE: DrawInstruction = new RectangleInstruction(Snake.SIZE, Snake.SIZE, Snake.COLOR)
 }
 
 object Direction extends Enumeration {
@@ -15,8 +16,6 @@ object Direction extends Enumeration {
 }
 
 class Segment(val x: Int, val y: Int) extends Positionable {
-  def image(): FilledShapeInstruction = new RectangleInstruction(Snake.SIZE, Snake.SIZE, Snake.COLOR)
-
   override def equals(o: Any): Boolean = o match {
     case that: Segment => this.x == that.x && this.y == that.y
     case _ => false
@@ -44,7 +43,7 @@ class Snake(val dir: Direction, val segments: List[Segment]) extends Drawable {
   override def draw(scene: DrawInstruction): DrawInstruction = {
     def offset(pos: Int): Int = pos * Snake.SIZE
     segments.foldLeft(scene)({(acc: DrawInstruction, segment: Segment) =>
-      new PlaceInstruction(segment.image(), offset(segment.x), offset(segment.y), acc)
+      new PlaceInstruction(Snake.IMAGE, offset(segment.x), offset(segment.y), acc)
     })
   }
 
