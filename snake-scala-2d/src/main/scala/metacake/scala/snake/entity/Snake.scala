@@ -25,19 +25,23 @@ class Segment(val x: Int, val y: Int) extends Positionable {
 
 class Snake(val dir: Direction, val segments: List[Segment]) extends Drawable {
 
-  def move(): Snake = {
-    def head: Segment = dir match {
-      case Direction.UP => headInDirection(0, -1)
-      case Direction.DOWN => headInDirection(0, 1)
-      case Direction.LEFT => headInDirection(-1, 0)
-      case Direction.RIGHT => headInDirection(1, 0)
-    }
-    new Snake(dir, head :: segments.dropRight(1))
+  def move(): Snake = new Snake(dir, nextHead() :: segments.dropRight(1))
+
+  def grow(): Snake = {
+    def tail: Segment = segments.last
+    new Snake(dir, (nextHead() :: segments.dropRight(1)) :+ new Segment(tail.x, tail.y))
+  }
+
+  private def nextHead(): Segment = dir match {
+    case Direction.UP => headInDirection(0, -1)
+    case Direction.DOWN => headInDirection(0, 1)
+    case Direction.LEFT => headInDirection(-1, 0)
+    case Direction.RIGHT => headInDirection(1, 0)
   }
 
   private def headInDirection(x: Int, y: Int): Segment = {
-    def head: Segment = segments.head
-    new Segment(head.x + x, head.y + y)
+    def head = segments.head
+    new Segment(x + head.x, y + head.y)
   }
 
   override def draw(scene: DrawInstruction): DrawInstruction = {
