@@ -38,7 +38,6 @@ class SnakeState(snake: Snake, food: Food) extends UserState {
   }
 
   private def recognized(recognizers: CustomizableMap[ActionRecognizerName, KeyActionRecognizer], name: ActionRecognizerName): Boolean = {
-    println(recognizers.get(name))
     recognizers.get(name).triggerWeight() > 0
   }
 
