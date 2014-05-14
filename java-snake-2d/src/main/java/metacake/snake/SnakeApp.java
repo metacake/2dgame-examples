@@ -16,6 +16,7 @@ public class SnakeApp {
                .withInputDevices(new KeyboardDevice())
                .withOutputDevices(new DrawingDevice())
                .withInitialState(new SetupState())
+               .withLoopTime(250)
                .createAndLaunch();
     }
 }

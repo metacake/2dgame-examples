@@ -8,15 +8,17 @@ import java.util.LinkedList;
 
 public class Snake implements Drawable {
 
-    public static Snake initialSnake() {
-        Collection<SnakeSegment> head = new LinkedList<>();
+    public static Snake initialSnake(Direction direction) {
+        LinkedList<SnakeSegment> head = new LinkedList<>();
         head.add(new SnakeSegment(0, 0));
-        return new Snake(head);
+        return new Snake(direction, head);
     }
 
-    private Collection<SnakeSegment> segments;
+    private Direction direction;
+    private LinkedList<SnakeSegment> segments;
 
-    Snake(Collection<SnakeSegment> segments) {
+    Snake(Direction direction, LinkedList<SnakeSegment> segments) {
+        this.direction = direction;
         this.segments = segments;
     }
 
@@ -27,5 +29,22 @@ public class Snake implements Drawable {
             image = segment.draw(image);
         }
         return image;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public void move() {
+
+        SnakeSegment snakeHead = segments.getFirst();
+        SnakeSegment head = new SnakeSegment(direction.getChangeX() + snakeHead.getX(), direction.getChangeY() + snakeHead.getY());
+        segments.addFirst(head);
+        segments.removeLast();
+    }
+
+    @Override
+    public String toString() {
+        return segments.toString();
     }
 }

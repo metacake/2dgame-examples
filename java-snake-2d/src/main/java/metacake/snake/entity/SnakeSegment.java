@@ -30,4 +30,9 @@ class SnakeSegment extends Positionable implements Drawable {
              return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "(" + getX() + ", " + getY() + ")";
+    }
 }
