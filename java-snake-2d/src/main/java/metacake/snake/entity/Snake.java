@@ -2,8 +2,6 @@ package metacake.snake.entity;
 
 import io.metacake.s2d.output.drawing.instructions.DrawInstruction;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 
 public class Snake implements Drawable {
@@ -36,11 +34,21 @@ public class Snake implements Drawable {
     }
 
     public void move() {
-
         SnakeSegment snakeHead = segments.getFirst();
         SnakeSegment head = new SnakeSegment(direction.getChangeX() + snakeHead.getX(), direction.getChangeY() + snakeHead.getY());
         segments.addFirst(head);
         segments.removeLast();
+    }
+
+    public void eat() {
+        SnakeSegment snakeHead = segments.getFirst();
+        SnakeSegment head = new SnakeSegment(direction.getChangeX() + snakeHead.getX(), direction.getChangeY() + snakeHead.getY());
+        segments.addFirst(head);
+    }
+
+    public boolean canEat(Food food) {
+        SnakeSegment snakeHead = segments.getFirst();
+        return snakeHead.getX() == food.getX() && snakeHead.getY() == food.getY();
     }
 
     @Override
