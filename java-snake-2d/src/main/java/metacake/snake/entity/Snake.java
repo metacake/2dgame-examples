@@ -55,4 +55,12 @@ public class Snake implements Drawable {
     public String toString() {
         return segments.toString();
     }
+
+    public int getHeadX() {
+        return segments.getFirst().getX();
+    }
+
+    public int getHeadY() {
+        return segments.getFirst().getY();
+    }
 }

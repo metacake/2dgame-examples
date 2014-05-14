@@ -4,6 +4,7 @@ import io.metacake.core.common.CustomizableMap;
 import io.metacake.core.output.RenderingInstructionBundle;
 import io.metacake.core.process.ActionRecognizerName;
 import io.metacake.core.process.ActionRecognizerPipe;
+import io.metacake.core.process.state.EndState;
 import io.metacake.core.process.state.VoidState;
 import io.metacake.s2d.input.keyboard.KeyboardDevice;
 import io.metacake.s2d.output.drawing.DrawingDevice;
@@ -23,7 +24,10 @@ import static metacake.snake.input.KeyConfiguration.*;
 
 public class SnakeState extends VoidState {
 
+    static final int BOARD_WIDTH = SnakeApp.WIDTH / Food.SIZE;
+    static final int BOARD_HEIGHT = SnakeApp.HEIGHT / Food.SIZE;
     private static final DrawInstruction EMPTY_SCENE = new RectangleInstruction(WIDTH, HEIGHT, Color.WHITE);
+
     private Snake snake;
     private Food food;
 
@@ -41,18 +45,24 @@ public class SnakeState extends VoidState {
         } else {
             snake.move();
         }
+        checkBoundaries();
+    }
 
+    private void checkBoundaries() {
+        if (snake.getHeadX() < 0 || snake.getHeadX() > BOARD_WIDTH || snake.getHeadY() < 0 || snake.getHeadY() > BOARD_HEIGHT) {
+            setTransition(EndState.closeWith(this));
+        }
     }
 
     void newFood() {
         Random rand = new Random();
-        this.food = new Food(rand.nextInt(SnakeApp.WIDTH / Food.SIZE), rand.nextInt(SnakeApp.HEIGHT / Food.SIZE));
+        this.food = new Food(rand.nextInt(BOARD_WIDTH), rand.nextInt(BOARD_HEIGHT));
     }
 
     @Override
     public RenderingInstructionBundle renderingInstructions() {
         RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-        bundle.add(DrawingDevice.NAME(), food.draw(snake.draw(EMPTY_SCENE)));
+        bundle.add(DrawingDevice.NAME(), snake.draw(food.draw(EMPTY_SCENE)));
         return bundle;
     }
 
