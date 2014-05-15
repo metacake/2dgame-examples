@@ -24,7 +24,7 @@ object SnakeState {
 class SnakeState(snake: Snake, food: Food) extends UserState {
   override def tick(delta: Long, pipe: ActionRecognizerPipe): GameState = {
     def recognizers: CustomizableMap[ActionRecognizerName, KeyActionRecognizer] = pipe.emptyBucket(KeyboardDevice.KEY)
-    if (recognized(recognizers, conf.ESCAPE) || outsideBounds(snake)) EndState.closeWith(this)
+    if (recognized(recognizers, conf.ESCAPE) || outsideBounds(snake) || snake.collidesWithSelf()) EndState.closeWith(this)
     else if (isEating) createMoreFood(recognizers)
     else new SnakeState(new Snake(getDirection(recognizers), snake.segments).move(), this.food)
   }

@@ -32,6 +32,13 @@ class Snake(val dir: Direction, val segments: List[Segment]) extends Drawable {
     new Snake(dir, (nextHead() :: segments.dropRight(1)) :+ new Segment(tail.x, tail.y))
   }
 
+  def collidesWithSelf(): Boolean = {
+    def head: Segment = segments.head
+    segments.tail.foldLeft(false) ({(acc: Boolean, segment: Segment) =>
+      (segment.x == head.x && segment.y == head.y) || acc
+    })
+  }
+
   private def nextHead(): Segment = dir match {
     case Direction.UP => headInDirection(0, -1)
     case Direction.DOWN => headInDirection(0, 1)
