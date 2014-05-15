@@ -51,6 +51,11 @@ public class Snake implements Drawable {
         return snakeHead.getX() == food.getX() && snakeHead.getY() == food.getY();
     }
 
+    public boolean isEatingSelf() {
+        SnakeSegment snakeHead = segments.getFirst();
+        return segments.stream().skip(1).anyMatch((segment) -> segment.equals(snakeHead));
+    }
+
     @Override
     public String toString() {
         return segments.toString();

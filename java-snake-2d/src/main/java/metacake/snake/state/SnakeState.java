@@ -39,19 +39,17 @@ public class SnakeState extends VoidState {
     @Override
     public void update(long delta, ActionRecognizerPipe recognizers) {
         setSnakeDirection(recognizers.emptyBucket(KeyboardDevice.KEY()));
+        if (isSnakeOutofBounds() || snake.isEatingSelf()) setTransition(EndState.closeWith(this));
         if (snake.canEat(food)) {
             snake.eat();
             newFood();
         } else {
             snake.move();
         }
-        checkBoundaries();
     }
 
-    private void checkBoundaries() {
-        if (snake.getHeadX() < 0 || snake.getHeadX() > BOARD_WIDTH || snake.getHeadY() < 0 || snake.getHeadY() > BOARD_HEIGHT) {
-            setTransition(EndState.closeWith(this));
-        }
+    private boolean isSnakeOutofBounds() {
+        return snake.getHeadX() < 0 || snake.getHeadX() > BOARD_WIDTH || snake.getHeadY() < 0 || snake.getHeadY() > BOARD_HEIGHT;
     }
 
     void newFood() {
