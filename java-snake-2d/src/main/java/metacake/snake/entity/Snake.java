@@ -68,4 +68,8 @@ public class Snake implements Drawable {
     public int getHeadY() {
         return segments.getFirst().getY();
     }
+
+    public int size() {
+        return segments.size();
+    }
 }
