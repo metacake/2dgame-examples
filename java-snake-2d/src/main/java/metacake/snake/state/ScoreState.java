@@ -19,6 +19,7 @@ import static metacake.snake.SnakeApp.WIDTH;
 public class ScoreState extends VoidState {
 
     private static final DrawInstruction EMPTY_SCENE = new RectangleInstruction(WIDTH, HEIGHT, Color.WHITE);
+    private static final Font font = new Font("Arial", Font.PLAIN, 16);
 
     private int score;
     public ScoreState(Snake snake) {
@@ -33,7 +34,8 @@ public class ScoreState extends VoidState {
     @Override
     public RenderingInstructionBundle renderingInstructions() {
         RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-        DrawInstruction image = new PlaceInstruction(new TextInstruction("Game Over!", Font.getFont("Arial"), Color.BLACK), 50, 50, EMPTY_SCENE);
+        DrawInstruction withScore = new PlaceInstruction(new TextInstruction("Game Over!", font, Color.BLACK), 250, 250, EMPTY_SCENE);
+        DrawInstruction image = new PlaceInstruction(new TextInstruction("Your score is " + score, font, Color.BLACK), 250, 300, withScore);
         return bundle.add(DrawingDevice.NAME(), image);
     }
 }
