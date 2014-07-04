@@ -1,6 +1,7 @@
 package metacake.scala.snake.entity
 
 import java.awt.Color
+
 import io.metacake.s2d.output.drawing.instructions._
 import metacake.scala.snake.entity.Direction.Direction
 

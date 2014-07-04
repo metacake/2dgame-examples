@@ -18,7 +18,7 @@
         <dependency>
             <groupId>metacake</groupId>
             <artifactId>metacake</artifactId>
-            <version>b1.1.0</version>
+            <version>b1.2.2</version>
         </dependency>
         <dependency>
             <groupId>metacake</groupId>
