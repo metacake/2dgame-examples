@@ -4,8 +4,7 @@ import io.metacake.core.common.CustomizableMap;
 import io.metacake.core.output.RenderingInstructionBundle;
 import io.metacake.core.process.ActionRecognizerName;
 import io.metacake.core.process.ActionRecognizerPipe;
-import io.metacake.core.process.state.EndState;
-import io.metacake.core.process.state.VoidState;
+import io.metacake.core.process.Transition;
 import io.metacake.s2d.input.keyboard.KeyboardDevice;
 import io.metacake.s2d.output.drawing.DrawingDevice;
 import io.metacake.s2d.output.drawing.instructions.DrawInstruction;
@@ -19,10 +18,11 @@ import metacake.snake.entity.Snake;
 import java.awt.*;
 import java.util.Random;
 
-import static metacake.snake.SnakeApp.*;
+import static metacake.snake.SnakeApp.HEIGHT;
+import static metacake.snake.SnakeApp.WIDTH;
 import static metacake.snake.input.KeyConfiguration.*;
 
-public class SnakeState extends VoidState {
+public class SnakeState implements RenderableGameState {
 
     static final int BOARD_WIDTH = SnakeApp.WIDTH / Food.SIZE;
     static final int BOARD_HEIGHT = SnakeApp.HEIGHT / Food.SIZE;
@@ -37,10 +37,11 @@ public class SnakeState extends VoidState {
     }
 
     @Override
-    public void update(long delta, ActionRecognizerPipe recognizers) {
-        setSnakeDirection(recognizers.emptyBucket(KeyboardDevice.KEY()));
+    public Transition tick(long delta, ActionRecognizerPipe pipe) {
+        setSnakeDirection(pipe.emptyBucket(KeyboardDevice.KEY()));
         if (isSnakeOutofBounds() || snake.isEatingSelf()) {
-            setTransition(new ScoreState(snake));
+            RenderableGameState state = new ScoreState(snake);
+            return Transition.to(state).withInstructions(state.render());
         }
         if (snake.canEat(food)) {
             snake.eat();
@@ -48,6 +49,7 @@ public class SnakeState extends VoidState {
         } else {
             snake.move();
         }
+        return Transition.to(this).withInstructions(this.render());
     }
 
     private boolean isSnakeOutofBounds() {
@@ -59,11 +61,9 @@ public class SnakeState extends VoidState {
         this.food = new Food(rand.nextInt(BOARD_WIDTH), rand.nextInt(BOARD_HEIGHT));
     }
 
-    @Override
-    public RenderingInstructionBundle renderingInstructions() {
+    public RenderingInstructionBundle render() {
         RenderingInstructionBundle bundle = new RenderingInstructionBundle();
-        bundle.add(DrawingDevice.NAME(), snake.draw(food.draw(EMPTY_SCENE)));
-        return bundle;
+        return bundle.add(DrawingDevice.NAME(), snake.draw(food.draw(EMPTY_SCENE)));
     }
 
     void setSnakeDirection(CustomizableMap<ActionRecognizerName, KeyActionRecognizer> recognizers) {

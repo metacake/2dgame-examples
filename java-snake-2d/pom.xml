@@ -12,12 +12,12 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>metacake</groupId>
             <artifactId>metacake</artifactId>
-            <version>b1.1.0</version>
+            <version>b1.2.2</version>
         </dependency>
         <dependency>
             <groupId>metacake</groupId>
